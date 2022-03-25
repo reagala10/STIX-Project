@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -25,7 +25,12 @@ def home():
         file = form.file.data # First grab the file
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) # Then save the file
         os.chdir("/Users/rohiteagala/python_projects/STIX/static/files")
-        return "File uploaded"
+        json_str = ""
+        f = open("STIX.json")
+        data = json.load(f)
+        data = jsonify(data)
+        return  data
+
     return render_template('index.html', form=form)
 
 if __name__ == '__main__':
